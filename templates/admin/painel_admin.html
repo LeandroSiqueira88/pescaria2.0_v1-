@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Painel do Administrador{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Bem-vindo, Administrador!</h2>
+        <p>Esta é a área de gerenciamento do sistema. Aqui você pode gerenciar usuários, dados e configurações do site.</p>
+
+        <div class="button-group">
+            <a href="{{ url_for('admin.criar_usuario') }}" class="btn btn-primary">Criar Novo Usuário</a>
+            <a href="{{ url_for('admin.gerenciar_usuarios') }}" class="btn btn-primary">Gerenciar Usuários</a>
+            <a href="{{ url_for('admin.criar_peixe') }}" class="btn btn-primary">Cadastrar Peixe</a>
+            <a href="{{ url_for('admin.gerenciar_peixes') }}" class="btn btn-primary">Gerenciar Peixes</a>
+        </div>
+    </div>
+{% endblock %}

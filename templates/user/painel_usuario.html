@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Painel do Usuário{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Bem-vindo, Usuário!</h2>
+        <p>Este é o seu painel. Aqui você pode visualizar suas pescarias, gerenciar seu perfil e explorar os peixes cadastrados no sistema.</p>
+        
+        <div class="button-group">
+            <a href="#" class="btn btn-primary">Minhas Pescarias</a>
+            <a href="#" class="btn btn-primary">Gerenciar Perfil</a>
+            <a href="{{ url_for('user.listar_peixes') }}" class="btn btn-primary">Ver Peixes</a>
+        </div>
+    </div>
+{% endblock %}

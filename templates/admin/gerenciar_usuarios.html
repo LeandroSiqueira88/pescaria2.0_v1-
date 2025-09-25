@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar Usuários{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Gerenciar Usuários</h2>
+        <p>Aqui você pode ver e gerenciar todos os usuários do sistema.</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="message-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Perfil</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.id }}</td>
+                    <td>{{ usuario.nome }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>{{ usuario.perfil.nome.capitalize() }}</td>
+                    <td class="action-buttons">
+                        <a href="{{ url_for('admin.editar_usuario', id_usuario=usuario.id) }}" class="btn btn-primary btn-small">Editar</a>
+                        <form action="{{ url_for('admin.excluir_usuario', id_usuario=usuario.id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar este usuário?');">
+                            <button type="submit" class="btn btn-danger btn-small">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+        <div class="button-group" style="margin-top: 20px;">
+            <a href="{{ url_for('admin.painel_admin') }}" class="btn btn-secondary">Voltar para o Painel</a>
+        </div>
+    </div>
+{% endblock %}

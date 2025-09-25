@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Peixe{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Editar Peixe</h2>
+        <p>Editando informações de **{{ peixe.nome_comum }}**.</p>
+        
+        <form method="POST">
+            <label for="nome_comum">Nome Comum:</label>
+            <input type="text" id="nome_comum" name="nome_comum" value="{{ peixe.nome_comum }}" required>
+            
+            <label for="nome_cientifico">Nome Científico:</label>
+            <input type="text" id="nome_cientifico" name="nome_cientifico" value="{{ peixe.nome_cientifico }}">
+            
+            <label for="foto_url">URL da Foto:</label>
+            <input type="text" id="foto_url" name="foto_url" value="{{ peixe.foto_url }}">
+
+            <label for="habitat">Habitat:</label>
+            <input type="text" id="habitat" name="habitat" value="{{ peixe.habitat }}">
+
+            <label for="periodo_atividade">Período de Atividade:</label>
+            <input type="text" id="periodo_atividade" name="periodo_atividade" value="{{ peixe.periodo_atividade }}">
+
+            <label for="tamanho_medio">Tamanho Médio:</label>
+            <input type="text" id="tamanho_medio" name="tamanho_medio" value="{{ peixe.tamanho_medio }}">
+
+            <label for="equipamento_sugerido">Equipamento Sugerido:</label>
+            <textarea id="equipamento_sugerido" name="equipamento_sugerido" rows="4">{{ peixe.equipamento_sugerido }}</textarea>
+
+            <label for="dicas">Dicas:</label>
+            <textarea id="dicas" name="dicas" rows="4">{{ peixe.dicas }}</textarea>
+
+            <button type="submit">Salvar Alterações</button>
+        </form>
+    </div>
+    
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('admin.gerenciar_peixes') }}" class="btn btn-secondary">Voltar para Gerenciar Peixes</a>
+    </div>
+{% endblock %}

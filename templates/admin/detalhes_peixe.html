@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes do Peixe{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Detalhes do Peixe: {{ peixe.nome_comum }}</h2>
+        <div class="fish-details-grid">
+            <div class="fish-image">
+                {% if peixe.foto_url %}
+                    <img src="{{ peixe.foto_url }}" alt="Foto do peixe {{ peixe.nome_comum }}">
+                {% else %}
+                    <div class="no-image">
+                        <p>Sem imagem</p>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="fish-info">
+                <p><strong>Nome Científico:</strong> {{ peixe.nome_cientifico }}</p>
+                <p><strong>Habitat:</strong> {{ peixe.habitat }}</p>
+                <p><strong>Período de Atividade:</strong> {{ peixe.periodo_atividade }}</p>
+                <p><strong>Tamanho Médio:</strong> {{ peixe.tamanho_medio }}</p>
+            </div>
+            <div class="full-width">
+                <h3>Equipamento Sugerido</h3>
+                <p>{{ peixe.equipamento_sugerido }}</p>
+                <h3>Dicas</h3>
+                <p>{{ peixe.dicas }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('admin.gerenciar_peixes') }}" class="btn btn-secondary">Voltar para a Lista de Peixes</a>
+    </div>
+
+    <style>
+        .fish-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .fish-details-grid .fish-image {
+            width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .fish-details-grid .fish-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .fish-details-grid .fish-info p {
+            margin: 0 0 1rem 0;
+            font-size: 1rem;
+        }
+        
+        .fish-details-grid .full-width {
+            grid-column: 1 / span 2;
+        }
+
+        .no-image {
+            width: 100%;
+            height: 200px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius);
+            color: #6c757d;
+        }
+
+        @media (max-width: 768px) {
+            .fish-details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Início{% endblock %}
+
+{% block content %}
+    <div class="hero card">
+        <h2>Bem-vindo ao Sistema Pescaria</h2>
+        <p>A melhor plataforma para gerenciar suas atividades de pesca.</p>
+        <div class="button-group">
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Entrar</a>
+            <a href="{{ url_for('cadastro') }}" class="btn btn-secondary">Criar Conta</a>
+        </div>
+    </div>
+{% endblock %}

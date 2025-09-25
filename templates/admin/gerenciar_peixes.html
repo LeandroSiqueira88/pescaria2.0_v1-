@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar Peixes{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Gerenciar Peixes</h2>
+        <p>Aqui você pode ver todos os peixes cadastrados no sistema.</p>
+        
+        <table class="user-table fish-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome Comum</th>
+                    <th>Nome Científico</th>
+                    <th>Tamanho Médio</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for peixe in peixes %}
+                <tr>
+                    <td>{{ peixe.id_peixe }}</td>
+                    <td>{{ peixe.nome_comum }}</td>
+                    <td>{{ peixe.nome_cientifico }}</td>
+                    <td>{{ peixe.tamanho_medio }}</td>
+                    <td class="action-buttons">
+                        <a href="{{ url_for('admin.detalhes_peixe', id_peixe=peixe.id_peixe) }}" class="btn btn-secondary btn-small">Detalhes</a>
+                        <a href="{{ url_for('admin.editar_peixe', id_peixe=peixe.id_peixe) }}" class="btn btn-primary btn-small">Editar</a>
+                        <form action="{{ url_for('admin.excluir_peixe', id_peixe=peixe.id_peixe) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este peixe?');">
+                            <button type="submit" class="btn btn-danger btn-small">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="button-group" style="margin-top: 20px;">
+            <a href="{{ url_for('admin.painel_admin') }}" class="btn btn-secondary">Voltar para o Painel</a>
+        </div>
+    </div>
+{% endblock %}

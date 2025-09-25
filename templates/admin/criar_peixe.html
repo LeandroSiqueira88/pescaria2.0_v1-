@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Peixe{% endblock %}
+
+{% block content %}
+    <div class="form-container card">
+        <h2>Cadastrar Novo Peixe</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="message-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST">
+            <label for="nome_comum">Nome Comum:</label>
+            <input type="text" id="nome_comum" name="nome_comum" required>
+            
+            <label for="nome_cientifico">Nome Científico:</label>
+            <input type="text" id="nome_cientifico" name="nome_cientifico">
+            
+            <label for="foto_url">URL da Foto:</label>
+            <input type="text" id="foto_url" name="foto_url">
+
+            <label for="habitat">Habitat:</label>
+            <input type="text" id="habitat" name="habitat">
+
+            <label for="periodo_atividade">Período de Atividade:</label>
+            <input type="text" id="periodo_atividade" name="periodo_atividade">
+
+            <label for="tamanho_medio">Tamanho Médio:</label>
+            <input type="text" id="tamanho_medio" name="tamanho_medio">
+
+            <label for="equipamento_sugerido">Equipamento Sugerido:</label>
+            <textarea id="equipamento_sugerido" name="equipamento_sugerido" rows="4"></textarea>
+
+            <label for="dicas">Dicas:</label>
+            <textarea id="dicas" name="dicas" rows="4"></textarea>
+
+            <button type="submit">Cadastrar Peixe</button>
+        </form>
+    </div>
+    
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('admin.painel_admin') }}" class="btn btn-secondary">Voltar para o Painel</a>
+    </div>
+{% endblock %}
