@@ -5,13 +5,66 @@
 {% block content %}
     <div class="card">
         <h2>Bem-vindo, Administrador!</h2>
-        <p>Esta é a área de gerenciamento do sistema. Aqui você pode gerenciar usuários, dados e configurações do site.</p>
+        <p>Visão geral do sistema.</p>
 
-        <div class="button-group">
+        <div class="dashboard-metrics">
+            <div class="metric-card">
+                <h3>Total de Usuários</h3>
+                <p class="metric-value">{{ total_usuarios }}</p>
+            </div>
+            <div class="metric-card">
+                <h3>Peixes Cadastrados</h3>
+                <p class="metric-value">{{ total_peixes_cadastrados }}</p>
+            </div>
+            <div class="metric-card">
+                <h3>Total de Pescarias</h3>
+                <p class="metric-value">{{ total_pescarias }}</p>
+            </div>
+            <div class="metric-card">
+                <h3>Pescarias Públicas</h3>
+                <p class="metric-value">{{ pescarias_compartilhadas }}</p>
+            </div>
+        </div>
+        
+        <div class="button-group" style="margin-top: 20px;">
             <a href="{{ url_for('admin.criar_usuario') }}" class="btn btn-primary">Criar Novo Usuário</a>
             <a href="{{ url_for('admin.gerenciar_usuarios') }}" class="btn btn-primary">Gerenciar Usuários</a>
             <a href="{{ url_for('admin.criar_peixe') }}" class="btn btn-primary">Cadastrar Peixe</a>
             <a href="{{ url_for('admin.gerenciar_peixes') }}" class="btn btn-primary">Gerenciar Peixes</a>
+            <a href="{{ url_for('admin.gerenciar_legislacao') }}" class="btn btn-primary">Gerenciar Legislação</a>
+            <a href="{{ url_for('admin.gerenciar_comunidade') }}" class="btn btn-primary">Gerenciar Comunidade</a>
+            <a href="{{ url_for('admin.gerenciar_material') }}" class="btn btn-primary">Gerenciar Material</a>
+            <a href="{{ url_for('admin.gerenciar_eventos') }}" class="btn btn-primary">Gerenciar Eventos</a>
         </div>
     </div>
+    
+    <style>
+        .dashboard-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .metric-card {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 2rem;
+        }
+
+        .metric-card h3 {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+    </style>
 {% endblock %}

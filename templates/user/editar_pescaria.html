@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Pescaria{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Editar Pescaria</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <label for="local">Local da Pescaria:</label>
+            <div class="input-with-button">
+                <input type="text" id="local" name="local" value="{{ pescaria.local }}" required>
+                </div>
+            
+            <label for="data">Data e Hora:</label>
+            <input type="datetime-local" id="data" name="data" value="{{ pescaria.data.strftime('%Y-%m-%dT%H:%M') }}" required>
+
+            <label for="peixe_id">Peixe Capturado:</label>
+            <select id="peixe_id" name="peixe_id" required>
+                {% for peixe in peixes %}
+                    <option value="{{ peixe.id_peixe }}" {% if peixe.id_peixe == pescaria.id_peixe %}selected{% endif %}>{{ peixe.nome_comum }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="peso">Peso do Peixe (em kg):</label>
+            <input type="number" id="peso" name="peso" value="{{ pescaria.peso_peixe }}" step="0.01">
+
+            <label for="comprimento">Comprimento do Peixe (em cm):</label>
+            <input type="number" id="comprimento" name="comprimento" value="{{ pescaria.comprimento_peixe }}" step="0.01">
+
+            <label>Foto Atual:</label>
+            {% if pescaria.foto_pescaria %}
+                <img src="{{ url_for('static', filename=pescaria.foto_pescaria) }}" alt="Foto da pescaria" style="max-width: 200px; margin-bottom: 1rem;">
+            {% else %}
+                <p>Nenhuma foto anexada.</p>
+            {% endif %}
+
+            <label for="foto">Anexar Nova Foto:</label>
+            <input type="file" id="foto" name="foto" accept="image/*">
+
+            <button type="submit">Salvar Alterações</button>
+        </form>
+    </div>
+    
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('user.minhas_pescarias') }}" class="btn btn-secondary">Cancelar</a>
+    </div>
+{% endblock %}

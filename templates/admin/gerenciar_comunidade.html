@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar Comunidade{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Gerenciar Comunidade</h2>
+        <p>Aqui você pode ver e gerenciar as pescarias compartilhadas pelos usuários.</p>
+        
+        {% if pescarias %}
+            <div class="comunidade-grid">
+                {% for pescaria in pescarias %}
+                <div class="pescaria-card">
+                    {% if pescaria.foto_pescaria %}
+                        <img src="{{ url_for('static', filename=pescaria.foto_pescaria) }}" alt="Foto da pescaria de {{ pescaria.peixe.nome_comum }}">
+                    {% else %}
+                        <div class="sem-imagem">
+                            <p>Sem Foto</p>
+                        </div>
+                    {% endif %}
+                    <div class="pescaria-info">
+                        <h3>{{ pescaria.peixe.nome_comum }}</h3>
+                        <p><strong>Pescador:</strong> {{ pescaria.usuario.nome }}</p>
+                        <p><strong>Local:</strong> {{ pescaria.local }}</p>
+                        <p><strong>Data:</strong> {{ pescaria.data.strftime('%d/%m/%Y') }}</p>
+                    </div>
+                    <div class="card-actions">
+                        <form action="{{ url_for('admin.excluir_pescaria_comunidade', id_pescaria=pescaria.id_pescaria) }}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir esta pescaria da comunidade?');">
+                            <button type="submit" class="btn btn-danger">Excluir</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Nenhuma pescaria foi compartilhada ainda.</p>
+        {% endif %}
+    </div>
+    
+    <style>
+        .card-actions {
+            padding: 1rem;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
+{% endblock %}

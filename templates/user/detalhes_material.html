@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes do Material{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>{{ material.nome }}</h2>
+        <p><strong>Tipo:</strong> {{ material.tipo }}</p>
+        <hr>
+        {% if material.foto_url %}
+            <img src="{{ material.foto_url }}" alt="Foto do material {{ material.nome }}" style="max-width: 100%; height: auto; margin-bottom: 2rem; border-radius: var(--border-radius);">
+        {% endif %}
+        <h3>Descrição</h3>
+        <p>{{ material.descricao }}</p>
+        {% if material.link_compra %}
+            <div class="button-group" style="margin-top: 2rem;">
+                <a href="{{ material.link_compra }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Comprar Agora</a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('user.listar_material') }}" class="btn btn-secondary">Voltar</a>
+    </div>
+{% endblock %}

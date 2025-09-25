@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar Material{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Gerenciar Material</h2>
+        <p>Aqui você pode criar e editar os materiais de pesca.</p>
+
+        <a href="{{ url_for('admin.criar_material') }}" class="btn btn-primary">
+            Adicionar Novo Material
+        </a>
+
+        {% if materiais %}
+            <table class="user-table" style="margin-top: 1.5rem;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for material in materiais %}
+                    <tr>
+                        <td>{{ material.id_material }}</td>
+                        <td>{{ material.nome }}</td>
+                        <td>{{ material.tipo }}</td>
+                        <td class="action-buttons">
+                            <a href="{{ url_for('admin.editar_material', id_material=material.id_material) }}" class="btn btn-primary btn-small">Editar</a>
+                            <form action="{{ url_for('admin.excluir_material', id_material=material.id_material) }}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este material?');">
+                                <button type="submit" class="btn btn-danger btn-small">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="margin-top: 1rem;">Nenhum material cadastrado ainda.</p>
+        {% endif %}
+    </div>
+    
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('admin.painel_admin') }}" class="btn btn-secondary">Voltar para o Painel</a>
+    </div>
+{% endblock %}

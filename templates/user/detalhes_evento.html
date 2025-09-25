@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes do Evento{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>{{ evento.nome }}</h2>
+        <p><strong>Local:</strong> {{ evento.local }}</p>
+        <p><strong>Data:</strong> {{ evento.data.strftime('%d/%m/%Y às %H:%M') }}</p>
+        <hr>
+        {% if evento.foto_url %}
+            <img src="{{ evento.foto_url }}" alt="Foto do evento {{ evento.nome }}" style="max-width: 100%; height: auto; margin-bottom: 2rem; border-radius: var(--border-radius);">
+        {% endif %}
+        <h3>Descrição</h3>
+        <p>{{ evento.descricao }}</p>
+        {% if evento.link_inscricao %}
+            <div class="button-group" style="margin-top: 2rem;">
+                <a href="{{ evento.link_inscricao }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Inscreva-se Agora</a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('user.listar_eventos') }}" class="btn btn-secondary">Voltar</a>
+    </div>
+{% endblock %}

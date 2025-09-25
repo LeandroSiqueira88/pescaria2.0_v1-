@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar Legislação{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Gerenciar Legislação</h2>
+        <p>Aqui você pode criar e editar as leis de pesca.</p>
+
+        <a href="{{ url_for('admin.criar_legislacao') }}" class="btn btn-primary">
+            Adicionar Nova Legislação
+        </a>
+
+        {% if legislacoes %}
+            <table class="user-table" style="margin-top: 1.5rem;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Data de Criação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for legislacao in legislacoes %}
+                    <tr>
+                        <td>{{ legislacao.id_legislacao }}</td>
+                        <td>{{ legislacao.titulo }}</td>
+                        <td>{{ legislacao.data_criacao.strftime('%d/%m/%Y') }}</td>
+                        <td class="action-buttons">
+                            <a href="{{ url_for('admin.editar_legislacao', id_legislacao=legislacao.id_legislacao) }}" class="btn btn-primary btn-small">Editar</a>
+                            <form action="{{ url_for('admin.excluir_legislacao', id_legislacao=legislacao.id_legislacao) }}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir esta legislação?');">
+                                <button type="submit" class="btn btn-danger btn-small">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="margin-top: 1rem;">Nenhuma legislação cadastrada ainda.</p>
+        {% endif %}
+    </div>
+    
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('admin.painel_admin') }}" class="btn btn-secondary">Voltar para o Painel</a>
+    </div>
+{% endblock %}

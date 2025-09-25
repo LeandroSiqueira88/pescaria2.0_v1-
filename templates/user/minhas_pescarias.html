@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Minhas Pescarias{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Minhas Pescarias</h2>
+        {% if pescarias %}
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Local</th>
+                        <th>Peixe</th>
+                        <th>Peso (kg)</th>
+                        <th>Comprimento (cm)</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pescaria in pescarias %}
+                    <tr>
+                        <td>{{ pescaria.data.strftime('%d/%m/%Y %H:%M') }}</td>
+                        <td>
+                            {% if pescaria.latitude and pescaria.longitude %}
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ pescaria.latitude }},{{ pescaria.longitude }}" target="_blank" rel="noopener noreferrer">{{ pescaria.local }}</a>
+                            {% else %}
+                                {{ pescaria.local }}
+                            {% endif %}
+                        </td>
+                        <td>{{ pescaria.peixe.nome_comum }}</td>
+                        <td>{{ pescaria.peso_peixe }}</td>
+                        <td>{{ pescaria.comprimento_peixe }}</td>
+                        <td>
+                            {% if pescaria.compartilhada %}
+                                <span style="color: green;">Público</span>
+                            {% else %}
+                                <span style="color: red;">Privado</span>
+                            {% endif %}
+                        </td>
+                        <td class="action-buttons">
+                            <form action="{{ url_for('user.compartilhar_pescaria', id_pescaria=pescaria.id_pescaria) }}" method="POST" style="display: inline;">
+                                {% if pescaria.compartilhada %}
+                                    <button type="submit" class="btn btn-secondary btn-small">Tornar Privado</button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-warning btn-small">Compartilhar</button>
+                                {% endif %}
+                            </form>
+                            <a href="{{ url_for('user.editar_pescaria', id_pescaria=pescaria.id_pescaria) }}" class="btn btn-primary btn-small">Editar</a>
+                            <form action="{{ url_for('user.excluir_pescaria', id_pescaria=pescaria.id_pescaria) }}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir esta pescaria?');">
+                                <button type="submit" class="btn btn-danger btn-small">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Você ainda não registrou nenhuma pescaria.</p>
+        {% endif %}
+    </div>
+
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('user.painel_usuario') }}" class="btn btn-secondary">Voltar para o Painel</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Registrar Pescaria{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Registrar Nova Pescaria</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <label for="local">Local da Pescaria:</label>
+            <div id="map-container" style="height: 300px; width: 100%; border-radius: var(--border-radius); margin-bottom: 1rem;"></div>
+            
+            <input type="text" id="local" name="local" placeholder="Clique no mapa para definir o local" required>
+            
+            <label for="data">Data e Hora:</label>
+            <input type="datetime-local" id="data" name="data" required>
+
+            <label for="peixe_id">Peixe Capturado:</label>
+            <select id="peixe_id" name="peixe_id" required>
+                {% for peixe in peixes %}
+                    <option value="{{ peixe.id_peixe }}">{{ peixe.nome_comum }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="peso">Peso do Peixe (em kg):</label>
+            <input type="number" id="peso" name="peso" step="0.01">
+
+            <label for="comprimento">Comprimento do Peixe (em cm):</label>
+            <input type="number" id="comprimento" name="comprimento" step="0.01">
+
+            <label for="foto">Foto da Pescaria:</label>
+            <div class="file-input-wrapper">
+                <input type="file" id="foto" name="foto" accept="image/*">
+                <span class="file-button">Escolher Foto</span>
+                <span class="file-name" id="file-name">Nenhum arquivo selecionado</span>
+            </div>
+
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
+
+            <button type="submit">Registrar Pescaria</button>
+        </form>
+    </div>
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('user.painel_usuario') }}" class="btn btn-secondary">Voltar para o Painel</a>
+    </div>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.css') }}"/>
+    <script src="{{ url_for('static', filename='js/leaflet.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Eventos de Pesca{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Próximos Eventos</h2>
+        <p>Confira os campeonatos, feiras e encontros da comunidade de pesca.</p>
+        
+        <div class="eventos-list">
+            {% for evento in eventos %}
+            <div class="evento-item">
+                {% if evento.foto_url %}
+                    <img src="{{ evento.foto_url }}" alt="Foto do evento {{ evento.nome }}">
+                {% endif %}
+                <div class="evento-info">
+                    <h3><a href="{{ url_for('user.detalhes_evento', id_evento=evento.id_evento) }}">{{ evento.nome }}</a></h3>
+                    <p><strong>Local:</strong> {{ evento.local }}</p>
+                    <p><strong>Data:</strong> {{ evento.data.strftime('%d/%m/%Y às %H:%M') }}</p>
+                </div>
+            </div>
+            {% else %}
+                <p>Nenhum evento cadastrado ainda.</p>
+            {% endfor %}
+        </div>
+    </div>
+    <style>
+        .eventos-list {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .evento-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+        }
+        
+        .evento-item img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+        }
+        
+        .evento-info h3 a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .evento-info h3 a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .evento-info p {
+            margin: 0.5rem 0;
+        }
+    </style>
+{% endblock %}

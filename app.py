@@ -20,7 +20,6 @@ def create_app():
     login_manager.init_app(app)
     login_manager.login_view = 'login'
 
-    # Adiciona a instância do bcrypt para que ela possa ser acessada nas rotas
     app.extensions['bcrypt'] = bcrypt
 
     @login_manager.user_loader
@@ -129,7 +128,7 @@ if __name__ == '__main__':
         # Cria um usuário administrador padrão se ele não existir
         admin_email = 'admin@admin.com'
         if not Usuario.query.filter_by(email=admin_email).first():
-            bcrypt = app.extensions['bcrypt']
+            bcrypt = app.extensions.get('bcrypt')
             hashed_senha = bcrypt.generate_password_hash('123456').decode('utf-8')
             perfil_admin = Perfil.query.filter_by(nome='admin').first()
             novo_admin = Usuario(nome='Administrador', email=admin_email, senha=hashed_senha, id_perfil=perfil_admin.id_perfil)

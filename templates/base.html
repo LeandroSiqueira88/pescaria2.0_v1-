@@ -11,17 +11,22 @@
 </head>
 <body>
     <header class="navbar">
-        <a href="{{ url_for('index') }}" class="logo">Pescaria Inteligênte</a>
+        <a href="{{ url_for('index') }}" class="logo">Pescaria</a>
         <nav>
             <ul class="nav-links">
                 <li><a href="{{ url_for('user.listar_peixes') }}">Peixes</a></li>
+                <li><a href="{{ url_for('user.comunidade') }}">Comunidade</a></li>
+                <li><a href="{{ url_for('user.listar_legislacao') }}">Legislação</a></li>
+                <li><a href="{{ url_for('user.listar_material') }}">Material</a></li>
+                <li><a href="{{ url_for('user.listar_eventos') }}">Eventos</a></li>
+
                 {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('sair') }}">Sair</a></li>
                     {% if current_user.id_perfil == 1 %}
                         <li><a href="{{ url_for('admin.painel_admin') }}">Painel Admin</a></li>
                     {% else %}
                         <li><a href="{{ url_for('user.painel_usuario') }}">Painel Usuário</a></li>
                     {% endif %}
+                    <li><a href="{{ url_for('sair') }}">Sair</a></li>
                 {% else %}
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                     <li><a href="{{ url_for('cadastro') }}">Cadastre-se</a></li>

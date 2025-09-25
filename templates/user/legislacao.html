@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Legislação{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Legislação de Pesca</h2>
+        <p>Consulte as principais leis e regulamentos de pesca.</p>
+        
+        <div class="legislacao-list">
+            {% for legislacao in legislacoes %}
+                <div class="legislacao-item">
+                    <h3><a href="{{ url_for('user.detalhes_legislacao', id_legislacao=legislacao.id_legislacao) }}">{{ legislacao.titulo }}</a></h3>
+                    <p class="data-criacao">Publicado em: {{ legislacao.data_criacao.strftime('%d/%m/%Y') }}</p>
+                </div>
+            {% else %}
+                <p>Nenhuma legislação cadastrada ainda.</p>
+            {% endfor %}
+        </div>
+    </div>
+    <style>
+        .legislacao-list {
+            margin-top: 2rem;
+        }
+
+        .legislacao-item {
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .legislacao-item h3 a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .legislacao-item h3 a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .data-criacao {
+            font-size: 0.9em;
+            color: var(--text-light);
+        }
+    </style>
+{% endblock %}

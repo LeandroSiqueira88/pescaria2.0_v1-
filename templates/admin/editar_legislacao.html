@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Legislação{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Editar Legislação</h2>
+        <form method="POST">
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" value="{{ legislacao.titulo }}" required>
+            
+            <label for="conteudo">Conteúdo:</label>
+            <textarea id="conteudo" name="conteudo" rows="10" required>{{ legislacao.conteudo }}</textarea>
+            
+            <label for="link_externo">Link da Lei (URL):</label>
+            <input type="url" id="link_externo" name="link_externo" value="{{ legislacao.link_externo }}">
+            
+            <button type="submit">Salvar Alterações</button>
+        </form>
+    </div>
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('admin.gerenciar_legislacao') }}" class="btn btn-secondary">Voltar</a>
+    </div>
+{% endblock %}

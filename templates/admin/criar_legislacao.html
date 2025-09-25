@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Criar Legislação{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Adicionar Nova Legislação</h2>
+        <form method="POST">
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" required>
+
+            <label for="link_externo">Link da Lei (URL):</label>
+            <input type="url" id="link_externo" name="link_externo">
+            
+            <label for="conteudo">Conteúdo:</label>
+            <textarea id="conteudo" name="conteudo" rows="10" required></textarea>
+          
+            <button type="submit">Salvar Legislação</button>
+        </form>
+    </div>
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('admin.gerenciar_legislacao') }}" class="btn btn-secondary">Voltar</a>
+    </div>
+{% endblock %}
