@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log("main.js carregado.");
 
+    // Lógica para o campo de upload de arquivo
     const fileInput = document.getElementById('foto');
     const fileNameSpan = document.getElementById('file-name');
     
@@ -14,12 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Lógica para o mapa interativo
     const mapContainer = document.getElementById('map-container');
     const localInput = document.getElementById('local');
     const latitudeInput = document.getElementById('latitude');
     const longitudeInput = document.getElementById('longitude');
 
     if (mapContainer && localInput && latitudeInput && longitudeInput) {
+        // Inicializa o mapa em uma localização padrão (Ribeirão Preto, SP)
         const defaultLat = -21.1764;
         const defaultLon = -47.8188;
         let map = L.map(mapContainer).setView([defaultLat, defaultLon], 13);
@@ -30,12 +33,13 @@ document.addEventListener('DOMContentLoaded', function() {
             maxZoom: 19,
         }).addTo(map);
 
-        function updateInputs(lat, lng) {
-            localInput.value = `Latitude: ${lat.toFixed(6)}, Longitude: ${lng.toFixed(6)}`;
+        function updateLocation(lat, lng) {
+            localInput.value = `Lat: ${lat.toFixed(6)}, Lon: ${lng.toFixed(6)}`;
             latitudeInput.value = lat;
             longitudeInput.value = lng;
         }
 
+        // Tenta obter a localização do usuário
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
                 function(position) {
@@ -46,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     if (marker) map.removeLayer(marker);
                     marker = L.marker([lat, lon], { draggable: true }).addTo(map).bindPopup("Local da Pescaria").openPopup();
-                    updateInputs(lat, lon);
+                    updateLocation(lat, lon);
                     
                     marker.on('dragend', function(e) {
                         const newLatLng = e.target.getLatLng();
@@ -55,19 +59,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 function(error) {
                     console.error("Erro na geolocalização: ", error);
-                    alert("Não foi possível obter sua localização. Você pode clicar no mapa para marcar o local.");
+                    // Deixa a localização padrão no mapa
                 }
             );
         } else {
-            alert("Geolocalização não é suportada por este navegador.");
+            console.error("Geolocalização não é suportada por este navegador.");
         }
         
+        // Adiciona a funcionalidade de clique no mapa
         map.on('click', function(e) {
             if (marker) {
                 map.removeLayer(marker);
             }
             marker = L.marker(e.latlng, { draggable: true }).addTo(map).bindPopup("Local da Pescaria").openPopup();
-            updateInputs(e.latlng.lat, e.latlng.lng);
+            updateLocation(e.latlng.lat, e.latlng.lng);
             
             marker.on('dragend', function(ev) {
                 const newLatLng = ev.target.getLatLng();

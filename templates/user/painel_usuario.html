@@ -7,6 +7,18 @@
         <h2>Bem-vindo, {{ current_user.nome }}!</h2>
         <p>Este é o seu painel de controle. Acompanhe suas estatísticas de pesca e acesse as funcionalidades do site.</p>
 
+        <div class="button-group" style="margin-top: 20px;">
+            <a href="{{ url_for('user.registrar_pescaria') }}" class="btn btn-primary">Registrar Nova Pescaria</a>
+            <a href="{{ url_for('user.minhas_pescarias') }}" class="btn btn-primary">Minhas Pescarias</a>
+            <a href="{{ url_for('user.editar_perfil') }}" class="btn btn-primary">Gerenciar Perfil</a>
+            <a href="{{ url_for('user.listar_peixes') }}" class="btn btn-primary">Ver Peixes</a>
+            <a href="{{ url_for('user.comunidade') }}" class="btn btn-primary">Comunidade</a>
+            <a href="{{ url_for('user.listar_legislacao') }}" class="btn btn-primary">Legislação</a>
+            <a href="{{ url_for('user.listar_material') }}" class="btn btn-primary">Material</a>
+            <a href="{{ url_for('user.listar_eventos') }}" class="btn btn-primary">Eventos</a>
+        </div>
+    </div>
+
         <div class="dashboard-metrics">
             <div class="metric-card">
                 <h3>Total de Pescarias</h3>
@@ -22,19 +34,7 @@
                 {% endif %}
             </div>
         </div>
-        
-        <div class="button-group" style="margin-top: 20px;">
-            <a href="{{ url_for('user.registrar_pescaria') }}" class="btn btn-primary">Registrar Nova Pescaria</a>
-            <a href="{{ url_for('user.minhas_pescarias') }}" class="btn btn-primary">Minhas Pescarias</a>
-            <a href="{{ url_for('user.editar_perfil') }}" class="btn btn-primary">Gerenciar Perfil</a>
-            <a href="{{ url_for('user.listar_peixes') }}" class="btn btn-primary">Ver Peixes</a>
-            <a href="{{ url_for('user.comunidade') }}" class="btn btn-primary">Comunidade</a>
-            <a href="{{ url_for('user.listar_legislacao') }}" class="btn btn-primary">Legislação</a>
-            <a href="{{ url_for('user.listar_material') }}" class="btn btn-primary">Material</a>
-            <a href="{{ url_for('user.listar_eventos') }}" class="btn btn-primary">Eventos</a>
-        </div>
-    </div>
-    
+           
     <style>
         .dashboard-metrics {
             display: grid;
@@ -54,7 +54,7 @@
         .metric-card h3 {
             font-size: 1.2rem;
             color: var(--secondary-color);
-            margin-bottom: 1rem;
+            margin-bottom: rem;
         }
 
         .metric-value {

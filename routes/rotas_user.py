@@ -1,9 +1,9 @@
 # E:\projeto\pescaria2.0\routes\rotas_user.py
 
-from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
+from flask import Blueprint, render_template, flash, redirect, url_for, request, current_app
 from flask_login import login_required, current_user
 from database import db
-from models import Peixe, Pescaria, Usuario, Legislacao, Material, Evento # Nova importação
+from models import Peixe, Pescaria, Usuario, Legislacao, Material, Evento
 from functools import wraps
 from datetime import datetime
 import os
@@ -30,9 +30,13 @@ def painel_usuario():
     total_pescarias = Pescaria.query.filter_by(id_usuario=current_user.id).count()
     maior_peixe = Pescaria.query.filter_by(id_usuario=current_user.id).order_by(Pescaria.peso_peixe.desc()).first()
     
+    previsao_tempo = None
+    # A lógica de previsão do tempo usaria a API_KEY e o módulo requests aqui.
+    
     return render_template('painel_usuario.html',
                            total_pescarias=total_pescarias,
-                           maior_peixe=maior_peixe)
+                           maior_peixe=maior_peixe,
+                           previsao_tempo=previsao_tempo)
 
 @rotas_user.route('/peixes')
 def listar_peixes():
@@ -60,17 +64,28 @@ def registrar_pescaria():
     if request.method == 'POST':
         local = request.form.get('local')
         data = request.form.get('data')
-        id_peixe = request.form.get('peixe_id')
+        id_peixe = request.form.get('id_peixe')
+        descricao = request.form.get('descricao') # Campo de descrição
         
-        # CORREÇÃO AQUI: TRATANDO VALORES VAZIOS
-        peso = float(request.form.get('peso')) if request.form.get('peso') else None
-        comprimento = float(request.form.get('comprimento')) if request.form.get('comprimento') else None
-        
+        # Tratamento de campos opcionais que são FLOAT
+        peso_str = request.form.get('peso')
+        comprimento_str = request.form.get('comprimento')
         latitude_str = request.form.get('latitude')
         longitude_str = request.form.get('longitude')
         
+        peso = float(peso_str) if peso_str else None
+        comprimento = float(comprimento_str) if comprimento_str else None
         latitude = float(latitude_str) if latitude_str else None
         longitude = float(longitude_str) if longitude_str else None
+
+        # Verificação de campos obrigatórios
+        if not data:
+            flash('O campo Data e Hora é obrigatório.', 'danger')
+            return redirect(url_for('user.registrar_pescaria'))
+        
+        if not local:
+            flash('A localização da pescaria é obrigatória.', 'danger')
+            return redirect(url_for('user.registrar_pescaria'))
 
         foto_pescaria_path = None
         if 'foto' in request.files:
@@ -96,6 +111,8 @@ def registrar_pescaria():
             latitude=latitude,
             longitude=longitude,
             foto_pescaria=foto_pescaria_path,
+            compartilhada=False,
+            descricao=descricao,
             id_usuario=current_user.id
         )
 
@@ -106,6 +123,7 @@ def registrar_pescaria():
         return redirect(url_for('user.painel_usuario'))
 
     return render_template('registrar_pescaria.html', peixes=peixes_disponiveis)
+
 @rotas_user.route('/minhas_pescarias')
 @user_required
 def minhas_pescarias():
@@ -144,8 +162,12 @@ def editar_pescaria(id_pescaria):
         pescaria.local = request.form.get('local')
         pescaria.data = datetime.strptime(request.form.get('data'), '%Y-%m-%dT%H:%M')
         pescaria.id_peixe = request.form.get('peixe_id')
-        pescaria.peso_peixe = float(request.form.get('peso')) if request.form.get('peso') else None
-        pescaria.comprimento_peixe = float(request.form.get('comprimento')) if request.form.get('comprimento') else None
+
+        peso_str = request.form.get('peso')
+        comprimento_str = request.form.get('comprimento')
+
+        pescaria.peso_peixe = float(peso_str) if peso_str else None
+        pescaria.comprimento_peixe = float(comprimento_str) if comprimento_str else None
         
         if 'foto' in request.files:
             foto = request.files['foto']

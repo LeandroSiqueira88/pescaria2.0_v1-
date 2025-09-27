@@ -1,38 +1,42 @@
 {% extends "base.html" %}
 
-{% block title %}Registrar Pescaria{% endblock %}
+{% block title %}Registrar Nova Pescaria{% endblock %}
 
 {% block content %}
     <div class="card">
         <h2>Registrar Nova Pescaria</h2>
-        <form method="POST" enctype="multipart/form-data">
-            <label for="local">Local da Pescaria:</label>
-            <div id="map-container" style="height: 300px; width: 100%; border-radius: var(--border-radius); margin-bottom: 1rem;"></div>
-            
-            <input type="text" id="local" name="local" placeholder="Clique no mapa para definir o local" required>
-            
-            <label for="data">Data e Hora:</label>
-            <input type="datetime-local" id="data" name="data" required>
+        
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-            <label for="peixe_id">Peixe Capturado:</label>
-            <select id="peixe_id" name="peixe_id" required>
+        <form method="POST" action="{{ url_for('user.registrar_pescaria') }}" enctype="multipart/form-data">
+            
+            <label for="id_peixe">Espécie do Peixe:</label>
+            <select id="id_peixe" name="id_peixe" required>
+                <option value="">Selecione a Espécie</option>
                 {% for peixe in peixes %}
                     <option value="{{ peixe.id_peixe }}">{{ peixe.nome_comum }}</option>
                 {% endfor %}
             </select>
             
-            <label for="peso">Peso do Peixe (em kg):</label>
-            <input type="number" id="peso" name="peso" step="0.01">
+            <label for="peso">Peso (kg):</label>
+            <input type="number" step="0.01" id="peso" name="peso">
+            
+            <label for="comprimento">Comprimento (cm):</label>
+            <input type="number" step="0.01" id="comprimento" name="comprimento">
 
-            <label for="comprimento">Comprimento do Peixe (em cm):</label>
-            <input type="number" id="comprimento" name="comprimento" step="0.01">
-
+            <label for="data">Data e Hora:</label>
+            <input type="datetime-local" id="data" name="data" required>
+            
+            <label for="descricao">Descrição da Pesca (Opcional):</label>
+            <textarea id="descricao" name="descricao" rows="4"></textarea> 
+                        
             <label for="foto">Foto da Pescaria:</label>
-            <div class="file-input-wrapper">
-                <input type="file" id="foto" name="foto" accept="image/*">
-                <span class="file-button">Escolher Foto</span>
-                <span class="file-name" id="file-name">Nenhum arquivo selecionado</span>
-            </div>
+            <input type="file" id="foto" name="foto" accept="image/*" required>
+            
+            <label for="localizacao">Localização da Pescaria (Clique no mapa para marcar):</label>
+            <div id="map" style="height: 600px; width: 100%; max-width: 1200px; margin: 0 auto; border-radius: var(--border-radius); margin-bottom: 1rem;"></div>
+            
+            <input type="text" id="local" name="local" placeholder="Localização atual: Lat, Lon" required>
 
             <input type="hidden" id="latitude" name="latitude">
             <input type="hidden" id="longitude" name="longitude">
@@ -40,11 +44,52 @@
             <button type="submit">Registrar Pescaria</button>
         </form>
     </div>
-    <div class="button-group" style="margin-top: 20px;">
-        <a href="{{ url_for('user.painel_usuario') }}" class="btn btn-secondary">Voltar para o Painel</a>
-    </div>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.css') }}"/>
-    <script src="{{ url_for('static', filename='js/leaflet.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Inicialização do mapa
+        var map = L.map('map').setView([-15.7801, -47.9292], 4); // Coordenada central (Brasília) e zoom
+
+        // Adicionando a camada de tiles (mapa base)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        var marker = null; 
+
+        // Função para atualizar a localização em TODOS os campos
+        function updateLocation(lat, lng) {
+            // ATUALIZA O CAMPO DE TEXTO VISÍVEL (name="local")
+            document.getElementById('local').value = `Lat: ${lat.toFixed(6)}, Lon: ${lng.toFixed(6)}`;
+            
+            // ATUALIZA OS CAMPOS OCULTOS
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+
+            // Remove o marcador anterior, se existir
+            if (marker) {
+                map.removeLayer(marker);
+            }
+
+            // Adiciona um novo marcador
+            marker = L.marker([lat, lng]).addTo(map)
+                .bindPopup("Local da Pescaria").openPopup();
+        }
+
+        // Evento de clique no mapa
+        map.on('click', function(e) {
+            updateLocation(e.latlng.lat, e.latlng.lng);
+        });
+
+        // Tente obter a localização atual do usuário
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var initialLat = position.coords.latitude;
+                var initialLng = position.coords.longitude;
+                
+                map.setView([initialLat, initialLng], 12); // Centraliza no usuário
+                updateLocation(initialLat, initialLng); // Define a localização inicial
+            });
+        }
+    </script>    
 {% endblock %}

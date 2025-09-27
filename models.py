@@ -62,8 +62,9 @@ class Pescaria(db.Model):
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     foto_pescaria = db.Column(db.String(255))
-    
     compartilhada = db.Column(db.Boolean, default=False)
+    
+    descricao = db.Column(db.Text) # NOVO CAMPO PARA DESCRIÇÃO
     
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuarios.id_usuario'), nullable=False)
     id_peixe = db.Column(db.Integer, db.ForeignKey('peixes.id_peixe'), nullable=False)

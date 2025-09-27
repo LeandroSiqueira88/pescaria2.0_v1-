@@ -25,7 +25,7 @@
                     <td>{{ peixe.nome_cientifico }}</td>
                     <td>{{ peixe.tamanho_medio }}</td>
                     <td class="action-buttons">
-                        <a href="{{ url_for('admin.detalhes_peixe', id_peixe=peixe.id_peixe) }}" class="btn btn-secondary btn-small">Detalhes</a>
+                        <a href="{{ url_for('admin.editar_peixe', id_peixe=peixe.id_peixe) }}" class="btn btn-secondary btn-small">Detalhes</a>
                         <a href="{{ url_for('admin.editar_peixe', id_peixe=peixe.id_peixe) }}" class="btn btn-primary btn-small">Editar</a>
                         <form action="{{ url_for('admin.excluir_peixe', id_peixe=peixe.id_peixe) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este peixe?');">
                             <button type="submit" class="btn btn-danger btn-small">Excluir</button>

@@ -13,6 +13,7 @@
 
         {% if query %}
             <p class="search-results">Exibindo resultados para: <strong>"{{ query }}"</strong></p>
+            <a href="{{ url_for('user.listar_peixes') }}" class="btn btn-secondary btn-small">Voltar para a lista completa</a>
         {% endif %}
         
         <div class="peixes-grid">
@@ -36,10 +37,6 @@
                     <p>Nenhum peixe encontrado. Tente outra busca.</p>
                 </div>
             {% endfor %}
-            {% if query %}
-                <p class="search-results">Exibindo resultados para: <strong>"{{ query }}"</strong></p>
-                <a href="{{ url_for('user.listar_peixes') }}" class="btn btn-secondary btn-small">Voltar para a lista completa</a>
-            {% endif %}
         </div>
     </div>
     
@@ -79,18 +76,42 @@
         }
 
         .peixes-grid {
+            /* CORREÇÃO AQUI: Força a criação de 4 colunas de tamanho igual */
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr); 
             gap: 2rem;
             margin-top: 2rem;
         }
-
+        
+        @media (max-width: 1000px) {
+            /* Em telas menores, volta para 3 colunas */
+            .peixes-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            /* Em telas de tablet, volta para 2 colunas */
+            .peixes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 500px) {
+            /* Em telas de celular, apenas 1 coluna */
+            .peixes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Estilos do Cartão (peixe-card) */
         .peixe-card {
             background-color: var(--card-background);
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%; /* Garante que todos os cartões tenham a mesma altura */
         }
         
         .peixe-card:hover {
@@ -100,7 +121,7 @@
 
         .peixe-imagem {
             width: 100%;
-            height: 200px;
+            height: 150px; /* Altura fixa para as imagens */
             overflow: hidden;
             position: relative;
         }
@@ -118,31 +139,32 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #6c757d;
+            color: var(--secondary-color);
         }
         
         .peixe-info {
-            padding: 1.5rem;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
+            text-align: center;
         }
         
         .peixe-info h3 {
             margin-top: 0;
             margin-bottom: 0.5rem;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: var(--primary-color);
         }
         
         .peixe-info p {
             margin: 0;
             color: var(--text-light);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
         .peixe-info .btn {
             margin-top: 1rem;
-            align-self: flex-start;
+            align-self: center;
         }
 
         .no-results {

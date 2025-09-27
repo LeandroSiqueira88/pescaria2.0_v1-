@@ -3,10 +3,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
 from flask_login import login_required, current_user
 from database import db
-from models import Usuario, Perfil, Peixe, Pescaria, Legislacao, Material, Evento # Nova importação
+from models import Usuario, Perfil, Peixe, Pescaria, Legislacao, Material, Evento
 from functools import wraps
 from datetime import datetime
 from flask_bcrypt import Bcrypt
+from sqlalchemy import func
+import os
 
 rotas_admin = Blueprint('admin', __name__, template_folder='../templates/admin')
 
