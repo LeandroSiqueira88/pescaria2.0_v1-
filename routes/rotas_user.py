@@ -11,7 +11,12 @@ from werkzeug.utils import secure_filename
 from flask_bcrypt import Bcrypt
 from sqlalchemy import func
 
+
+TIPOS_MATERIAL = ['Vara', 'Molinete', 'Carretilha', 'Isca Artificial', 'Isca Natural', 'Linha', 'Anzol', 'Outros']
+
 rotas_user = Blueprint('user', __name__, template_folder='../templates/user')
+
+
 
 def user_required(f):
     @wraps(f)
@@ -93,14 +98,15 @@ def registrar_pescaria():
             if foto.filename != '':
                 filename = secure_filename(f"{current_user.id}_{datetime.now().strftime('%Y%m%d%H%M%S')}_{foto.filename}")
                 upload_folder = os.path.join(current_app.root_path, 'static', 'uploads')
-                
-                if not os.path.exists(upload_folder):
-                    os.makedirs(upload_folder)
-                
-                foto.save(os.path.join(upload_folder, filename))
-                foto_pescaria_path = os.path.join('uploads', filename)
-
-        data_formatada = datetime.strptime(data, '%Y-%m-%dT%H:%M')
+        
+            if not os.path.exists(upload_folder):
+                 os.makedirs(upload_folder)
+        
+            foto.save(os.path.join(upload_folder, filename))
+        
+        # Salva no banco sempre com barra normal
+            foto_pescaria_path = f"uploads/{filename}"
+            data_formatada = datetime.strptime(data, '%Y-%m-%dT%H:%M')
 
         nova_pescaria = Pescaria(
             local=local,
@@ -216,6 +222,12 @@ def comunidade():
     pescarias_comunitarias = Pescaria.query.filter_by(compartilhada=True).order_by(Pescaria.data.desc()).all()
     return render_template('comunidade.html', pescarias=pescarias_comunitarias)
 
+@rotas_user.route('/pescaria/<int:id_pescaria>')
+def detalhes_pescaria_comunidade(id_pescaria):
+    # Busca a pescaria e verifica se ela é pública
+    pescaria = Pescaria.query.filter_by(id_pescaria=id_pescaria, compartilhada=True).first_or_404()
+    return render_template('detalhes_pescaria_comunidade.html', pescaria=pescaria)
+
 @rotas_user.route('/editar_perfil', methods=['GET', 'POST'])
 @user_required
 def editar_perfil():
@@ -257,8 +269,29 @@ def detalhes_legislacao(id_legislacao):
 
 @rotas_user.route('/material')
 def listar_material():
-    materiais = Material.query.order_by(Material.nome).all()
-    return render_template('material.html', materiais=materiais)
+    query = request.args.get('q') # Filtro por texto
+    tipo_selecionado = request.args.get('tipo') # Filtro por tipo
+    
+    materiais_query = Material.query.order_by(Material.nome)
+
+    # 1. Aplicar filtro de tipo
+    if tipo_selecionado and tipo_selecionado != 'Todos':
+        materiais_query = materiais_query.filter_by(tipo=tipo_selecionado)
+
+    # 2. Aplicar filtro de texto
+    if query:
+        materiais_query = materiais_query.filter(
+            (Material.nome.ilike(f'%{query}%')) | 
+            (Material.descricao.ilike(f'%{query}%'))
+        )
+        
+    materiais = materiais_query.all()
+        
+    return render_template('material.html', 
+                           materiais=materiais, 
+                           query=query, 
+                           tipos=TIPOS_MATERIAL,
+                           tipo_selecionado=tipo_selecionado)
 
 @rotas_user.route('/material/<int:id_material>')
 def detalhes_material(id_material):
@@ -274,3 +307,4 @@ def listar_eventos():
 def detalhes_evento(id_evento):
     evento = Evento.query.get_or_404(id_evento)
     return render_template('detalhes_evento.html', evento=evento)
+

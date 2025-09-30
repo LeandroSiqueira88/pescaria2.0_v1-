@@ -6,11 +6,14 @@
     <div class="card">
         <h2>Editar Legislação</h2>
         <form method="POST">
-            <label for="titulo">Título:</label>
+            <label for="titulo">Título Principal:</label>
             <input type="text" id="titulo" name="titulo" value="{{ legislacao.titulo }}" required>
             
-            <label for="conteudo">Conteúdo:</label>
-            <textarea id="conteudo" name="conteudo" rows="10" required>{{ legislacao.conteudo }}</textarea>
+            <label for="subtitulo">Subtítulo (Opcional):</label>
+            <input type="text" id="subtitulo" name="subtitulo" value="{{ legislacao.subtitulo }}" placeholder="Breve descrição da lei.">
+            
+            <label for="conteudo">Conteúdo (Use HTML básico para formatar: &lt;b&gt;, &lt;ul&gt;, &lt;br&gt;):</label>
+            <textarea id="conteudo" name="conteudo" rows="15" required>{{ legislacao.conteudo }}</textarea>
             
             <label for="link_externo">Link da Lei (URL):</label>
             <input type="url" id="link_externo" name="link_externo" value="{{ legislacao.link_externo }}">

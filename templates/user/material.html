@@ -6,42 +6,121 @@
     <div class="card">
         <h2>Material de Pesca</h2>
         <p>Encontre os melhores equipamentos e acessórios para sua pescaria.</p>
+
+        <form action="{{ url_for('user.listar_material') }}" method="GET" class="search-form">
+            <select name="tipo" class="select-filtro">
+                <option value="Todos" {% if tipo_selecionado == 'Todos' or not tipo_selecionado %}selected{% endif %}>Todos os Tipos</option>
+                {% for tipo in tipos %}
+                    <option value="{{ tipo }}" {% if tipo_selecionado == tipo %}selected{% endif %}>{{ tipo }}</option>
+                {% endfor %}
+            </select>
+            
+            <input type="text" name="q" placeholder="Buscar material por nome ou descrição..." value="{{ query if query }}">
+            
+            <button type="submit">Filtrar</button>
+        </form>
         
-        <div class="material-grid">
-            {% for material in materiais %}
-            <div class="material-card">
-                {% if material.foto_url %}
-                    <img src="{{ material.foto_url }}" alt="Foto do material {{ material.nome }}">
-                {% else %}
-                    <div class="sem-imagem">
-                        <p>Sem Foto</p>
+        {% if query or (tipo_selecionado and tipo_selecionado != 'Todos') %}
+            <p class="search-results">Exibindo resultados para: <strong>
+                {% if query %}Texto: "{{ query }}"{% endif %}
+                {% if tipo_selecionado and tipo_selecionado != 'Todos' %}, Tipo: {{ tipo_selecionado }}{% endif %}
+            </strong></p>
+            <a href="{{ url_for('user.listar_material') }}" class="btn btn-secondary btn-small">Limpar Filtros</a>
+        {% endif %}
+        
+        {% if materiais %}
+            <div class="material-grid">
+                {% for material in materiais %}
+                <div class="material-card">
+                    {% if material.foto_url %}
+                        <img src="{{ material.foto_url }}" alt="Foto do material {{ material.nome }}">
+                    {% else %}
+                        <div class="sem-imagem">
+                            <p>Sem Foto</p>
+                        </div>
+                    {% endif %}
+                    <div class="material-info">
+                        <h3>{{ material.nome }}</h3>
+                        <p><strong>Tipo:</strong> {{ material.tipo }}</p>
+                        <a href="{{ url_for('user.detalhes_material', id_material=material.id_material) }}" class="btn btn-primary btn-small">Ver Detalhes</a>
                     </div>
-                {% endif %}
-                <div class="material-info">
-                    <h3>{{ material.nome }}</h3>
-                    <p><strong>Tipo:</strong> {{ material.tipo }}</p>
-                    <a href="{{ url_for('user.detalhes_material', id_material=material.id_material) }}" class="btn btn-primary btn-small">Ver Detalhes</a>
                 </div>
+                {% endfor %}
             </div>
-            {% else %}
-                <p>Nenhum material cadastrado ainda.</p>
-            {% endfor %}
-        </div>
+        {% else %}
+            <p style="margin-top: 1rem;">Nenhum material encontrado.</p>
+        {% endif %}
     </div>
+    
     <style>
+        /* Estilo para a barra de pesquisa */
+        .search-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap; /* Garante quebras em telas pequenas */
+        }
+
+        .search-form input, .search-form select { /* Adiciona estilo ao select */
+            flex-grow: 1;
+            padding: 0.75rem;
+            border: 1px solid #ced4da; /* Alinhamento com os outros inputs */
+            border-radius: var(--border-radius);
+        }
+        
+        .search-form button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .search-form button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .search-results {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-top: -1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* O restante do CSS da grade e dos cartões permanece o mesmo */
         .material-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr); 
             gap: 2rem;
             margin-top: 2rem;
         }
 
+        /* ... (restante do CSS dos cartões e media queries) ... */
+        @media (max-width: 900px) {
+            .material-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .material-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* ... (restante do CSS) ... */
         .material-card {
             background-color: var(--card-background);
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             overflow: hidden;
             text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         
         .material-card img, .sem-imagem {
@@ -53,11 +132,19 @@
         
         .material-info {
             padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
         }
         
         .material-info h3 {
             margin-top: 0;
             color: var(--primary-color);
+        }
+        
+        .material-info .btn {
+            margin-top: 1rem;
         }
     </style>
 {% endblock %}

@@ -11,7 +11,6 @@
             {% for legislacao in legislacoes %}
                 <div class="legislacao-item">
                     <h3><a href="{{ url_for('user.detalhes_legislacao', id_legislacao=legislacao.id_legislacao) }}">{{ legislacao.titulo }}</a></h3>
-                    <p class="data-criacao">Publicado em: {{ legislacao.data_criacao.strftime('%d/%m/%Y') }}</p>
                 </div>
             {% else %}
                 <p>Nenhuma legislação cadastrada ainda.</p>

@@ -24,7 +24,7 @@ body {
 }
 
 .navbar {
-    background-color: var(--primary-color);
+    background-color: #87CEEB;
     color: var(--light-text-color);
     padding: 1rem 2rem; /* Mais espaçamento */
     display: flex;
@@ -339,4 +339,55 @@ footer {
     padding: 1rem;
     color: var(--text-light);
     margin-top: auto;
+}
+
+.conteudo-legislacao {
+    font-family: "Times New Roman", Arial, serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    text-align: justify;
+    margin-top: 2rem;
+    color: var(--text-color);
+}
+
+/* Parágrafos */
+.conteudo-legislacao p {
+    margin-bottom: 1rem;
+    text-indent: 1.25cm;
+}
+
+/* Listas */
+.conteudo-legislacao ul,
+.conteudo-legislacao ol {
+    margin: 0 0 1rem 2.5rem;
+    padding-left: 1rem;
+}
+.conteudo-legislacao li {
+    margin-bottom: 0.4rem;
+}
+
+/* Títulos internos */
+.conteudo-legislacao h1,
+.conteudo-legislacao h2,
+.conteudo-legislacao h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+/* Destaques */
+.conteudo-legislacao b,
+.conteudo-legislacao strong {
+    font-weight: bold;
+}
+
+/* Área de edição */
+#conteudo {
+    font-family: "Times New Roman", Arial, serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    text-align: justify;
+    text-indent: 1.25cm;
 }

@@ -21,10 +21,19 @@
                     <div class="pescaria-info">
                         <h3>{{ pescaria.peixe.nome_comum }}</h3>
                         <p><strong>Pescador:</strong> {{ pescaria.usuario.nome }}</p>
-                        <p><strong>Local:</strong> {{ pescaria.local }}</p>
+                        <p><strong>Local:</strong> 
+                            {% if pescaria.latitude and pescaria.longitude %}
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ pescaria.latitude }},{{ pescaria.longitude }}" target="_blank" rel="noopener noreferrer">{{ pescaria.local }}</a>
+                            {% else %}
+                                {{ pescaria.local }}
+                            {% endif %}
+                        </p>
                         <p><strong>Data:</strong> {{ pescaria.data.strftime('%d/%m/%Y') }}</p>
+                        <p><strong>Peso:</strong> {{ pescaria.peso_peixe }} kg</p>
                     </div>
                     <div class="card-actions">
+                        <a href="{{ url_for('user.detalhes_pescaria_comunidade', id_pescaria=pescaria.id_pescaria) }}" class="btn btn-secondary btn-small" style="margin-right: 10px;">Ver Relato</a>
+
                         <form action="{{ url_for('admin.excluir_pescaria_comunidade', id_pescaria=pescaria.id_pescaria) }}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir esta pescaria da comunidade?');">
                             <button type="submit" class="btn btn-danger">Excluir</button>
                         </form>
@@ -33,15 +42,64 @@
                 {% endfor %}
             </div>
         {% else %}
-            <p>Nenhuma pescaria foi compartilhada ainda.</p>
+            <div style="grid-column: 1 / -1; text-align: center;">
+                <p>Nenhuma pescaria foi compartilhada ainda.</p>
+            </div>
         {% endif %}
     </div>
     
     <style>
+        .comunidade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .pescaria-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .pescaria-card img, .sem-imagem {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .sem-imagem {
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+        }
+
+        .pescaria-info {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .pescaria-info h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
         .card-actions {
             padding: 1rem;
             text-align: center;
             border-top: 1px solid #dee2e6;
+        }
+        
+        .card-actions a.btn {
+            /* Garantir que os botões fiquem alinhados */
+            display: inline-block; 
         }
     </style>
 {% endblock %}

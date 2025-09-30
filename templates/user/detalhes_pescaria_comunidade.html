@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Relato de Pesca{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2 class="text-center">Relato de Pesca: {{ pescaria.peixe.nome_comum }}</h2>
+        <div class="pescaria-detalhes-header">
+            <p><strong>Pescador:</strong> {{ pescaria.usuario.nome }}</p>
+            <p><strong>Data:</strong> {{ pescaria.data.strftime('%d/%m/%Y às %H:%M') }}</p>
+        </div>
+        <hr>
+
+        <div class="pescaria-media-stats">
+            <div class="pescaria-imagem">
+                {% if pescaria.foto_pescaria %}
+                    <img src="{{ url_for('static', filename=pescaria.foto_pescaria) }}" alt="Foto da pescaria de {{ pescaria.peixe.nome_comum }}">
+                {% else %}
+                    <div class="sem-imagem-lg"><p>Sem Foto</p></div>
+                {% endif %}
+            </div>
+
+            <div class="pescaria-stats">
+                <h3>Detalhes da Captura</h3>
+                <p><strong>Peso:</strong> {{ pescaria.peso_peixe }} kg</p>
+                <p><strong>Comprimento:</strong> {{ pescaria.comprimento_peixe }} cm</p>
+                <p><strong>Espécie:</strong> <a href="{{ url_for('user.detalhes_peixe', id_peixe=pescaria.peixe.id_peixe) }}">{{ pescaria.peixe.nome_comum }}</a></p>
+                
+                <h3 style="margin-top: 1.5rem;">Local</h3>
+                <p><strong>Local de Pesca:</strong> 
+                    {% if pescaria.latitude and pescaria.longitude %}
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ pescaria.latitude }},{{ pescaria.longitude }}" target="_blank" rel="noopener noreferrer">{{ pescaria.local }}</a>
+                    {% else %}
+                        {{ pescaria.local }}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 2rem;">Descrição do Relato</h3>
+        <div class="descricao-relato">
+            <p>{{ pescaria.descricao if pescaria.descricao else 'O pescador não forneceu uma descrição detalhada desta captura.' }}</p>
+        </div>
+    </div>
+
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="{{ url_for('user.comunidade') }}" class="btn btn-secondary">Voltar para a Comunidade</a>
+    </div>
+
+    <style>
+        .pescaria-detalhes-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1em;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+        .pescaria-media-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            align-items: start;
+        }
+        .pescaria-imagem img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        .sem-imagem-lg {
+            width: 100%;
+            height: 350px;
+            background-color: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius);
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+        .pescaria-stats h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            border-bottom: 2px solid var(--background-color);
+            padding-bottom: 5px;
+        }
+        .descricao-relato {
+            border-left: 3px solid var(--primary-color);
+            padding-left: 15px;
+            margin-top: 1rem;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .pescaria-media-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+{% endblock %}

@@ -19,14 +19,25 @@
                 {% endif %}
                 <div class="pescaria-info">
                     <h3>{{ pescaria.peixe.nome_comum }}</h3>
-                    <p><strong>Local:</strong> {{ pescaria.local }}</p>
+                    <p><strong>Local:</strong> 
+                        {% if pescaria.latitude and pescaria.longitude %}
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ pescaria.latitude }},{{ pescaria.longitude }}" target="_blank" rel="noopener noreferrer">{{ pescaria.local }}</a>
+                        {% else %}
+                            {{ pescaria.local }}
+                        {% endif %}
+                    </p>
                     <p><strong>Peso:</strong> {{ pescaria.peso_peixe }} kg</p>
                     <p><strong>Comprimento:</strong> {{ pescaria.comprimento_peixe }} cm</p>
-                    <p class="pescador-info">Compartilhado por: <strong>{{ pescaria.usuario.nome }}</strong></p>
+                    
+                    <p class="pescador-info">Compartilhado por: <strong>{{ pescaria.usuario.nome }}</strong> em {{ pescaria.data.strftime('%d/%m/%Y') }}</p>
+                    
+                    <a href="{{ url_for('user.detalhes_pescaria_comunidade', id_pescaria=pescaria.id_pescaria) }}" class="btn btn-primary btn-small" style="margin-top: 10px;">Ver Relato</a>
                 </div>
             </div>
             {% else %}
-                <p>Nenhuma pescaria compartilhada ainda. Seja o primeiro a compartilhar!</p>
+                <div style="grid-column: 1 / -1; text-align: center;">
+                    <p>Nenhuma pescaria compartilhada ainda. Seja o primeiro a compartilhar!</p>
+                </div>
             {% endfor %}
         </div>
     </div>
@@ -44,6 +55,9 @@
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .pescaria-card img, .sem-imagem {
@@ -63,6 +77,7 @@
 
         .pescaria-info {
             padding: 1.5rem;
+            flex-grow: 1;
         }
 
         .pescaria-info h3 {

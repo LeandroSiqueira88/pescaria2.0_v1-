@@ -5,7 +5,10 @@
 {% block content %}
     <div class="card">
         <h2>{{ legislacao.titulo }}</h2>
-        <p class="data-criacao">Publicado em: {{ legislacao.data_criacao.strftime('%d/%m/%Y') }}</p>
+        {% if legislacao.subtitulo %}
+            <p class="subtitulo">{{ legislacao.subtitulo }}</p>
+        {% endif %}
+        
         {% if legislacao.link_externo %}
             <p><a href="{{ legislacao.link_externo }}" target="_blank" rel="noopener noreferrer">Ver documento completo</a></p>
         {% endif %}
@@ -17,14 +20,4 @@
     <div class="button-group" style="margin-top: 20px;">
         <a href="{{ url_for('user.listar_legislacao') }}" class="btn btn-secondary">Voltar para a Legislação</a>
     </div>
-    <style>
-        .data-criacao {
-            font-size: 0.9em;
-            color: var(--text-light);
-        }
-        .conteudo-legislacao {
-            margin-top: 2rem;
-            line-height: 1.8;
-        }
-    </style>
 {% endblock %}

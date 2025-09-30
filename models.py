@@ -76,6 +76,7 @@ class Legislacao(db.Model):
     __tablename__ = 'legislacao'
     id_legislacao = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(255), nullable=False)
+    subtitulo = db.Column(db.String(512)) # NOVO CAMPO
     conteudo = db.Column(db.Text, nullable=False)
     data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
     link_externo = db.Column(db.String(512))

@@ -6,15 +6,18 @@
     <div class="card">
         <h2>Adicionar Nova Legislação</h2>
         <form method="POST">
-            <label for="titulo">Título:</label>
+            <label for="titulo">Título Principal:</label>
             <input type="text" id="titulo" name="titulo" required>
+            
+            <label for="subtitulo">Subtítulo (Opcional):</label>
+            <input type="text" id="subtitulo" name="subtitulo" placeholder="Breve descrição da lei.">
+
+            <label for="conteudo">Conteúdo (Use HTML básico para formatar: &lt;b&gt;, &lt;ul&gt;, &lt;br&gt;):</label>
+            <textarea id="conteudo" name="conteudo" rows="15" required></textarea>
 
             <label for="link_externo">Link da Lei (URL):</label>
             <input type="url" id="link_externo" name="link_externo">
             
-            <label for="conteudo">Conteúdo:</label>
-            <textarea id="conteudo" name="conteudo" rows="10" required></textarea>
-          
             <button type="submit">Salvar Legislação</button>
         </form>
     </div>

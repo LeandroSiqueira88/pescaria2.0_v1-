@@ -7,6 +7,17 @@
         <h2>Bem-vindo, Administrador!</h2>
         <p>Visão geral do sistema.</p>
 
+        <div class="button-group" style="margin-top: 20px;">
+            <a href="{{ url_for('admin.criar_usuario') }}" class="btn btn-primary">Criar Novo Usuário</a>
+            <a href="{{ url_for('admin.gerenciar_usuarios') }}" class="btn btn-primary">Gerenciar Usuários</a>
+            <a href="{{ url_for('admin.criar_peixe') }}" class="btn btn-primary">Cadastrar Peixe</a>
+            <a href="{{ url_for('admin.gerenciar_peixes') }}" class="btn btn-primary">Gerenciar Peixes</a>
+            <a href="{{ url_for('admin.gerenciar_legislacao') }}" class="btn btn-primary">Gerenciar Legislação</a>
+            <a href="{{ url_for('admin.gerenciar_comunidade') }}" class="btn btn-primary">Gerenciar Comunidade</a>
+            <a href="{{ url_for('admin.gerenciar_material') }}" class="btn btn-primary">Gerenciar Material</a>
+            <a href="{{ url_for('admin.gerenciar_eventos') }}" class="btn btn-primary">Gerenciar Eventos</a>
+        </div>
+        <p>Visão geral do sistema.</p>
         <div class="dashboard-metrics">
             <div class="metric-card">
                 <h3>Total de Usuários</h3>
@@ -25,17 +36,7 @@
                 <p class="metric-value">{{ pescarias_compartilhadas }}</p>
             </div>
         </div>
-        
-        <div class="button-group" style="margin-top: 20px;">
-            <a href="{{ url_for('admin.criar_usuario') }}" class="btn btn-primary">Criar Novo Usuário</a>
-            <a href="{{ url_for('admin.gerenciar_usuarios') }}" class="btn btn-primary">Gerenciar Usuários</a>
-            <a href="{{ url_for('admin.criar_peixe') }}" class="btn btn-primary">Cadastrar Peixe</a>
-            <a href="{{ url_for('admin.gerenciar_peixes') }}" class="btn btn-primary">Gerenciar Peixes</a>
-            <a href="{{ url_for('admin.gerenciar_legislacao') }}" class="btn btn-primary">Gerenciar Legislação</a>
-            <a href="{{ url_for('admin.gerenciar_comunidade') }}" class="btn btn-primary">Gerenciar Comunidade</a>
-            <a href="{{ url_for('admin.gerenciar_material') }}" class="btn btn-primary">Gerenciar Material</a>
-            <a href="{{ url_for('admin.gerenciar_eventos') }}" class="btn btn-primary">Gerenciar Eventos</a>
-        </div>
+               
     </div>
     
     <style>

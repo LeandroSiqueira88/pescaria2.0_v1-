@@ -202,10 +202,11 @@ def gerenciar_legislacao():
 def criar_legislacao():
     if request.method == 'POST':
         titulo = request.form.get('titulo')
+        subtitulo = request.form.get('subtitulo') # NOVO CAMPO
         conteudo = request.form.get('conteudo')
         link_externo = request.form.get('link_externo')
         
-        nova_legislacao = Legislacao(titulo=titulo, conteudo=conteudo, link_externo=link_externo)
+        nova_legislacao = Legislacao(titulo=titulo, subtitulo=subtitulo, conteudo=conteudo, link_externo=link_externo)
         db.session.add(nova_legislacao)
         db.session.commit()
 
@@ -221,6 +222,7 @@ def editar_legislacao(id_legislacao):
     
     if request.method == 'POST':
         legislacao.titulo = request.form.get('titulo')
+        legislacao.subtitulo = request.form.get('subtitulo') # NOVO CAMPO
         legislacao.conteudo = request.form.get('conteudo')
         legislacao.link_externo = request.form.get('link_externo')
 
